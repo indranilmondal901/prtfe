@@ -12,32 +12,39 @@ const Home = () => {
         // e.preventDefault();
         console.log("search triggered");
         const access_key = "jbfx-gxqsNtLRRFk2OEhCDVXD9AW-dHWhK2by6uqE24";
-        const url = `https://api.unsplash.com/search/photos?client_id=${access_key}&query=${query}`
+        const url = `https://api.unsplash.com/search/photos?client_id=${access_key}&query=${query}`;
         console.log(url);
         axios.get(url).then((res) => {
             console.log(res.data.results);
             setData(res.data.results)
+        }).catch((err) => {
+            console.log(err);
         })
     }
 
-    const handelAdd = () => {
+    const handelAdd = (x) => {
+        console.log(x)
         window.alert("image added to bookmark")
+        navigate(`/bm/${x}`)
     }
 
     return (
         <>
             <div id='hb'>
                 <h1 style={{ textAlign: "center", fontSize: "2.5rem" }}>React Photo Search</h1>
-                <button onClick={()=>{navigate("/bm")}}>Bookmarks</button>
+                <button onClick={() => { navigate("/bm") }}>Bookmarks</button>
             </div>
             <div id="search">
                 <input type="text" onChange={(e) => { setquery(e.target.value) }} value={query} />
-                <button onClick={() => {handelSearch()}}>Search</button>
+                <button onClick={() => { handelSearch() }}>Search</button>
+            </div>
+            <div >
+                <p style={{ textAlign: "center", fontSize: "1.5rem" }}>Double Click On Image Add To Bookmark</p>
             </div>
             <div id="res-sec">
                 {data && data?.map((sD, i) => {
                     return (
-                        <div id="card" key={i} onDoubleClick={()=>{handelAdd()}}>
+                        <div id="card" key={i} onDoubleClick={() => { handelAdd(sD.id) }}>
                             <img src={sD.urls.full} alt={sD.id} height="300px" width="300px" />
                         </div>
                     )
